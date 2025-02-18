@@ -1,0 +1,53 @@
+#Caça ao tesouro 
+
+import random
+
+def Criar_Mapa(tamanho, Q_tesouros, Q_obstaculos):
+    mapa = [['x'] * tamanho for _ in range(tamanho)]
+    jogador_pos = (0, 0)
+    mapa[0][0] = 'J'
+    
+    def Add_elementos(tipo, quantidade, excluidos):
+        elementos = set()
+        while len(elementos) < quantidade:
+            pos = (random.randint(0, tamanho-1), random.randint(0, tamanho-1))
+            if pos != jogador_pos and pos not in excluidos:
+                elementos.add(pos)
+                mapa[pos[0]][pos[1]] = tipo
+        return elementos
+    
+    tesouros = Add_elementos('T', Q_tesouros, set())
+    Add_elementos('O', Q_obstaculos, tesouros)
+    return mapa, jogador_pos, tesouros
+
+def mostrar_mapa(mapa, jogador_pos):
+    for i, linha in enumerate(mapa):
+        print(' '.join('J' if (i, j) == jogador_pos else c if c != 'T' else 'x' for j, c in enumerate(linha)))
+    print()
+
+def jogar():
+    tamanho, movimentos, Q_tesouros, Q_obstaculos = 5, 20, 2, 3
+    mapa, jogador_pos, tesouros = Criar_Mapa(tamanho, Q_tesouros, Q_obstaculos)
+    encontrados = 0
+    
+    while movimentos > 0 and encontrados < Q_tesouros:
+        print(f"Movimentos: {movimentos} | Tesouros: {encontrados}/{Q_tesouros}")
+        mostrar_mapa(mapa, jogador_pos)
+        
+        direcao = input("Direcao (cima, baixo, esquerda, direita): ").strip().lower()
+        movimentos -= 1
+        i, j = jogador_pos
+        movimentos_validos = {'cima': (i-1, j), 'baixo': (i+1, j), 'esquerda': (i, j-1), 'direita': (i, j+1)}
+        jogador_pos = movimentos_validos.get(direcao, jogador_pos)
+        
+        if mapa[jogador_pos[0]][jogador_pos[1]] == 'O':
+            print("obstacolo, Escolhe outro caminho.")
+            continue
+        if jogador_pos in tesouros:
+            print("Parabens!!! Encontraste um tesouro!")
+            tesouros.remove(jogador_pos)
+            encontrados += 1
+    
+    print("Acabou," " encontraste os tesouros" if encontrados == Q_tesouros else "Não encontraste todos.")
+
+jogar()
