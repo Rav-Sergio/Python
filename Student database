@@ -1,0 +1,56 @@
+#Registo e Gestão de Alunos 14-02-2025
+
+class Alunos:
+    def __init__(self, nome, idade, notas):
+        self.nome = nome
+        self.idade = idade
+        self.notas = notas 
+
+    def calcular_media(self):
+        return sum(self.notas) / len(self.notas)
+    
+    def classificacao(self):
+        return "Passou" if self.calcular_media() >= 7 else "Cumbado"
+    
+    def __str__(self):
+        return f"Nome: {self.nome}, Idade: {self.idade}, Media: {self.calcular_media():.2f}, Conclusao letiva {self.classificacao()}"
+    
+alunos = []
+
+def registrar_aluno():
+    if len(alunos) >= 5:
+        print("Turma Completa.")
+        return
+    
+    nome = input("Nome do aluno: ")
+    idade = int(input("Idade do aluno: "))
+    notas = list(map(float, input("Digite as notas separadas por espaco: ").split()))
+    
+    aluno = Alunos(nome, idade, notas)
+    alunos.append(aluno)
+    print("Aluno registado!\n")
+
+def listar_alunos():
+    if not alunos:
+        print("Ainda nao ha alunos.\n")
+    else:
+        for aluno in alunos:
+            print(aluno)
+        print()
+
+while True:
+    print("1 - Registar Aluno")
+    print("2 - Listar Alunos")
+    print("3 - Sair")
+    opcao = input("Escolha uma opcao: ")
+    
+    if opcao == "1":
+        registrar_aluno()
+    elif opcao == "2":
+        listar_alunos()
+    elif opcao == "3":
+        print("Sair do programa")
+        break
+    else:
+        print("Nao existe esta opcao.\n")
+    
