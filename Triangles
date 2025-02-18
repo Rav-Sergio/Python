@@ -1,0 +1,14 @@
+for i in range(3):
+    num = int(input("Escreve o número:"))
+    if i == 0:
+        holder1 = num
+    elif i == 1:
+        holder2 = num
+    elif i == 2:
+        holder3 = num
+if holder1 == holder2 == holder3:
+    print("O triangulo é equilatro")
+elif holder1 != holder2 != holder3:
+    print("O triangulo é escaleno")
+elif holder1 == holder2 and holder1 != holder3 or holder2 == holder3 and holder2 != holder1 or holder3 == holder1 and holder3 != holder3:
+    print("O triangulo é isosceles")
